@@ -1,9 +1,9 @@
 from django.urls import path
 
-from catalog.views import home, contacts
+from catalog.views import catalog, contact
 
-urlpatterns = {
-    path('', home, name='home'),
-    path('contacts/', contacts, name='contacts'),
-
-}
+urlpatterns = [
+    path('', catalog),
+    path('contact/', contact),
+]
+#include('catalog.urls', namespace='catalog')
