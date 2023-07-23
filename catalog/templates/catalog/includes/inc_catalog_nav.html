@@ -1,0 +1,23 @@
+<div class="uk-section-primary">
+    <nav class="uk-navbar-container uk-navbar-transparent uk-light">
+        <div class="uk-container">
+            <div uk-navbar>
+                <div class="uk-navbar-center">
+                    <ul class="uk-navbar-nav">
+                        <li><a href="{% url 'catalog:add_product' %}"><span uk-icon="icon: plus"></span>Добавить товар</a></li>
+                        <li class="uk-active"><a href="{% url 'catalog:index' %}">Каталог</a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    {% for object in object_list %}
+                                    <li class="uk-active"><a href="{% url 'catalog:product' object.id %}">{{ object.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="uk-active"><a href="{% url 'catalog:contact' %}">Контакт</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

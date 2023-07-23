@@ -1,0 +1,47 @@
+{% extends 'catalog/base.html'%}
+{% block content %}
+
+<div class="uk-height-viewport uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
+     data-src="https://images.unsplash.com/photo-1464621922360-27f3bf0eca75?fit=crop&w=1920&h=1080&q=80"
+     uk-img>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="uk-fieldset">
+            {% if add_items == True %}
+            <legend class="uk-legend uk-text-success">Товар добавлен</legend>
+            {% elif add_items == False %}
+            <legend class="uk-legend uk-text-success">Товар не добавлен</legend>
+            {% endif %}
+
+            <legend class="uk-legend">Добавить товар</legend>
+
+            <div class="uk-margin">
+                <input name="name" class="uk-input" type="text" placeholder="Наименование" aria-label="Input1">
+            </div>
+            <div class="uk-margin">
+                <input name="description" class="uk-input" type="text" placeholder="Описание" aria-label="Input1">
+            </div>
+            <div class="js-upload" uk-form-custom>
+                <input name="image" type="file" multiple>
+                <button class="uk-button uk-button-default" type="button" tabindex="-1">Загрузить изображение
+                </button>
+            </div>
+            <div class="uk-margin">
+                <select name="category" class="uk-select">
+                    {% for category in category_list %}
+                    <option>{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="uk-margin">
+                <input name="price" class="uk-input" type="text" placeholder="Цена за товара" aria-label="Input1">
+            </div>
+            <p uk-margin>
+                <button class="uk-button uk-button-default">Отправить</button>
+            </p>
+
+        </fieldset>
+    </form>
+</div>
+{% endblock %}
