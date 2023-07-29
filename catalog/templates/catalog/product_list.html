@@ -6,7 +6,7 @@
         <h4 class="uk-heading-small">Список товаров:</h4>
         <div class="uk-child-width-1-3@m" uk-grid
              uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 0; repeat: false">
-            {% for object in page_object %}
+            {% for object in page_obj %}
             <div>
                 <div class="uk-card uk-card-default uk-card-body">
                     <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
@@ -23,8 +23,8 @@
         </div>
         <ul class="uk-pagination uk-flex-center" uk-margin>
             <li class="uk-disabled"><a><span uk-pagination-previous></span></a></li>
-            {% for p in page_object.paginator.page_range %}
-            {% if page_object.number == p %}
+            {% for p in page_obj.paginator.page_range %}
+            {% if page_obj.number == p %}
             <li class="uk-active"><a href="?page={{ p }}">{{ p }}</a></li>
             {% else %}
             <li><a href="?page={{ p }}">{{ p }}</a></li>

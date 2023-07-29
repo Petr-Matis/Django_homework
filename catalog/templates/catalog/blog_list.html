@@ -1,0 +1,45 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% block content %}
+    {% load catalog_tags %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blog1.css' %}">
+    {% for object in object_list %}
+        <div class="w-section section" id="page-nav-p1">
+            <div class="w-container page1">
+                <div class="w-row page">
+                    <div class="w-col w-col-2 sidebar">
+                        <img class="post-icon" src="{% static 'img/page_views.png' %}" width="47">
+                        <h4 class="date">Просмотров</h4>
+                        <h5>{{ object.count_views }}</h5>
+                        <h4 class="date">Публикация</h4>
+                        <h5>{{ object.create_date| date:"d M Y" }}</h5>
+                    </div>
+                    <div class="w-col w-col-10 textpage">
+                        <div class="w-section media">
+                            <a class="w-inline-block" href="{{ somevariable|check_foto:object }}">
+                                <img src="{{ somevariable|check_foto:object }}">
+                            </a>
+                        </div>
+                        <h1>{{ object.title }}</h1>
+                        <p>{{ object.content }}</p>
+                        <div class="w-container move-up-down">
+                            <div class="w-row">
+                                <div class="w-col w-col-4">
+                                    <a class="button uk-button-primary" href="{% url 'catalog:blog' object.slug %}">Посмотреть</a>
+                                </div>
+                                <div class="w-col w-col-4">
+                                    <a class="button uk-button-secondary"
+                                       href="{% url 'catalog:blog_update' object.slug %}">Изменить</a>
+                                </div>
+                                <div class="w-col w-col-4">
+                                    <a class="button uk-button-danger"
+                                       href="{% url 'catalog:blog_delete' object.slug %}">Удалить</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

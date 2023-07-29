@@ -1,0 +1,28 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% block content %}
+    {% load catalog_tags %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/blog1.css' %}">
+    <div class="w-section section" id="page-nav-p1">
+        <div class="w-container page1">
+            <div class="w-row page">
+                <div class="w-col w-col-2 sidebar">
+                    <img class="post-icon" src="{% static 'img/page_views.png' %}" width="47">
+                </div>
+                <div class="w-col w-col-10 textpage">
+                    <div class="w-section media">
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <fieldset class="uk-fieldset">
+                                <p>Подтвердите удаление поста "{{ object.title }}"</p>
+                                <button class="button uk-button-danger">
+                                    Удалить
+                                </button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -2,6 +2,8 @@ import datetime
 from django import template
 from django.conf import settings
 
+from catalog.models import Blog
+
 register = template.Library()
 
 
