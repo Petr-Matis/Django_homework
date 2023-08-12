@@ -1,7 +1,10 @@
 from django.contrib import admin
 
-from catalog.models import Product, Category, Blog
+from catalog.models import Product, Category, Blog, Version
 
+
+# admin.site.register(Product)
+# admin.site.register(Category)
 
 
 @admin.register(Product)
@@ -24,3 +27,7 @@ class BlogAdmin(admin.ModelAdmin):
     search_fields = ('title', 'is_published', 'count_views')
     sortable_by = ('create_date',)
 
+
+@admin.register(Version)
+class Version(admin.ModelAdmin):
+    list_display = ('product', 'number', 'title', 'is_active',)

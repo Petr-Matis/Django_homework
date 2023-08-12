@@ -1,26 +1,49 @@
-{% extends 'catalog/base.html'%}
+{% extends 'catalog/base.html' %}
 {% block content %}
+    <div class="uk-section-large uk-section-muted">
+        <div class="uk-container ">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if formset.non_form_errors %}
+                    <div class="alert alertdanger">111{{ formset.non_form_errors }}</div>
+                {% endif %}
+                <div uk-grid>
+                    <div class="uk-width-1-2">
+                        <div class="uk-card uk-card-default uk-card-body">
+                            <fieldset class="uk-fieldset">
+                                <legend class="uk-legend">Добавить товар</legend>
+                                {{ form.as_p }}
+                                <p uk-margin>
+                                    <button class="uk-button uk-button-primary">
+                                        {% if object %}
+                                            Изменить
+                                        {% else %}
+                                            Создать
+                                        {% endif %}
+                                    </button>
+                                </p>
+                            </fieldset>
+                        </div>
+                    </div>
+                {% if formset %}
+                    <div class="uk-width-1-2">
+                        <div class="uk-card uk-card-default uk-card-body">
+                            <fieldset class="uk-fieldset">
+                                <legend class="uk-legend">Версия продукта</legend>
 
-<div class="uk-height-viewport uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
-     data-src="https://images.unsplash.com/photo-1464621922360-27f3bf0eca75?fit=crop&w=1920&h=1080&q=80"
-     uk-img>
-
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset class="uk-fieldset">
-            {% if add_items == True %}
-            <legend class="uk-legend uk-text-success">Товар добавлен</legend>
-            {% elif add_items == False %}
-            <legend class="uk-legend uk-text-success">Товар не добавлен</legend>
-            {% endif %}
-
-            <legend class="uk-legend">Добавить товар</legend>
-             {{ form.as_p }}
-            <p uk-margin>
-                <button class="uk-button uk-button-default">Отправить</button>
-            </p>
-
-        </fieldset>
-    </form>
-</div>
+                                {{ formset.management_form }}
+                                {% for form in formset.forms %}
+                                    {{ form.as_p }}
+                                    {% if not forloop.last %}
+                                        <hr class="uk-divider-icon">
+                                    {% endif %}
+                                {% endfor %}
+                            </fieldset>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}

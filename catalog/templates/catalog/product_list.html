@@ -1,38 +1,44 @@
-{% extends 'catalog/base.html'%}
+{% extends 'catalog/base.html' %}
 {% block content %}
-{% load catalog_tags %}
-<div class="uk-section uk-section-muted">
-    <div class="uk-container">
-        <h4 class="uk-heading-small">Список товаров:</h4>
-        <div class="uk-child-width-1-3@m" uk-grid
-             uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 0; repeat: false">
-            {% for object in page_obj %}
-            <div>
-                <div class="uk-card uk-card-default uk-card-body">
-                    <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
-                         data-src="{{ somevariable|check_foto:object }}" uk-img>
+    {% load catalog_tags %}
+    <div class="uk-section uk-section-muted">
+        <div class="uk-container">
+            <h4 class="uk-heading-small">Список товаров:</h4>
+            <div class="uk-child-width-1-3@m" uk-grid
+                 uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 0; repeat: false">
+                {% for object in page_obj %}
+                    <div>
+                        <div class="uk-card uk-card-default uk-card-body">
+                            {% for version in version_is_active %}
+                            {% if version.product == object %}
+                                <span class="uk-text-small uk-text-right">Версия: {{ version.title }}</span>
+                            {% endif %}
+                    {% endfor %}
+                            <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
+                                 data-src="{{ somevariable|check_foto:object }}" uk-img>
+                            </div>
+                            <div class="uk-text-large">{{ object.name }}</div>
+                            <div>{{ object.description|slice:100 }}</div>
+                            <a class="uk-button uk-button-secondary uk-width-1-1 uk-margin-small-bottom"
+                               href="{% url 'catalog:product' object.id %}">Описание
+                            </a>
+                        </div>
                     </div>
-                    <div class="uk-text-large">{{ object.name }}</div>
-                    <div>{{ object.description|slice:100 }}</div>
-                    <a class="uk-button uk-button-secondary uk-width-1-1 uk-margin-small-bottom"
-                       href="{% url 'catalog:product' object.id %}">Описание
-                    </a>
-                </div>
+
+                {% endfor %}
             </div>
-            {% endfor %}
+            <ul class="uk-pagination uk-flex-center" uk-margin>
+                <li class="uk-disabled"><a><span uk-pagination-previous></span></a></li>
+                {% for p in page_obj.paginator.page_range %}
+                    {% if page_obj.number == p %}
+                        <li class="uk-active"><a href="?page={{ p }}">{{ p }}</a></li>
+                    {% else %}
+                        <li><a href="?page={{ p }}">{{ p }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                <li class="uk-disabled"><a><span uk-pagination-next></span></a></li>
+            </ul>
         </div>
-        <ul class="uk-pagination uk-flex-center" uk-margin>
-            <li class="uk-disabled"><a><span uk-pagination-previous></span></a></li>
-            {% for p in page_obj.paginator.page_range %}
-            {% if page_obj.number == p %}
-            <li class="uk-active"><a href="?page={{ p }}">{{ p }}</a></li>
-            {% else %}
-            <li><a href="?page={{ p }}">{{ p }}</a></li>
-            {% endif %}
-            {% endfor %}
-            <li class="uk-disabled"><a><span uk-pagination-next></span></a></li>
-        </ul>
     </div>
-</div>
 
 {% endblock %}
