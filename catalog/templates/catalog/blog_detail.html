@@ -12,6 +12,8 @@
                     <h5>{{ object.count_views }}</h5>
                     <h4 class="date">Публикация</h4>
                     <h5>{{ object.create_date| date:"d M Y" }}</h5>
+                    <h4 class="date">Владелец</h4>
+                    <h5>{{ product.owner| default:"Неизвестен"}}</h5>
                 </div>
                 <div class="w-col w-col-10 textpage">
                     <div class="w-section media">
@@ -22,17 +24,20 @@
                     <h1>{{ object.title }}</h1>
                     <p>{{ object.content }}</p>
                     <div class="w-container move-up-down">
-                        <div class="w-row">
-                            <div class="w-col w-col-4">
+                        {% if user.is_authenticated %}
+                            <div class="w-row">
+                                <div class="w-col w-col-4">
+                                </div>
+                                <div class="w-col w-col-4">
+                                    <a class="button uk-button-secondary"
+                                       href="{% url 'catalog:blog_update' object.slug %}">Изменить</a>
+                                </div>
+                                <div class="w-col w-col-4">
+                                    <a class="button uk-button-danger"
+                                       href="{% url 'catalog:blog_delete' object.slug %}">Удалить</a>
+                                </div>
                             </div>
-                            <div class="w-col w-col-4">
-                                <a class="button uk-button-secondary"
-                                   href="{% url 'catalog:blog_update' object.slug %}">Изменить</a>
-                            </div>
-                            <div class="w-col w-col-4">
-                                <a class="button uk-button-danger" href="{% url 'catalog:blog_delete' object.slug %}">Удалить</a>
-                            </div>
-                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

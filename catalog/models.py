@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
@@ -29,6 +30,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='цена за покупку')
     create_date = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
     last_change_date = models.DateTimeField(verbose_name='дата последнего изменения', auto_now=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
 
     def __str__(self):
         return f'{self.name}'
@@ -57,10 +59,10 @@ class Version(models.Model):
         verbose_name = 'версия'
         verbose_name_plural = 'версии'
 
-    # def clean(self) -> None:
-    #     super().clean()
-    #     if Version.objects.filter(product=self.product, is_active=True).get() != self and self.is_active:
-    #         raise forms.ValidationError('Ты можешь установить только одну активную версию.')
+    def clean(self) -> None:
+        super().clean()
+        if Version.objects.filter(product=self.product, is_active=True).get() != self and self.is_active:
+            raise forms.ValidationError('Ты можешь установить только одну активную версию.')
 
 
 class Blog(models.Model):
@@ -71,6 +73,7 @@ class Blog(models.Model):
     create_date = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
     is_published = models.BooleanField(verbose_name='Признак публикации')
     count_views = models.IntegerField(verbose_name='Количество просмотров', default=0)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
 
     def __str__(self):
         return self.title

@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+    <div class="uk-section-large uk-section-muted">
+        <div class="uk-container" style="height: 55vh">
+            {% if messages %}
+                    {% for message in messages %}
+                        <div class="uk-child-width-1-3 uk-text-center" uk-grid>
+                        <div></div>
+                            <div class="uk-card uk-card-secondary uk-card-hover uk-card-body uk-light">
+                                <h3 class="uk-card-title">{{ message }}</h3>
+                            </div>
+                        <div></div>
+                        </div>
+                    {% endfor %}
+            {% endif %}
+            <form  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="uk-child-width-1-3 uk-text-center" uk-grid>
+
+                    <div></div>
+                    <div class="uk-card uk-card-default uk-card-body">
+                        <fieldset class="uk-fieldset">
+                            <h6 class="uk-heading-line uk-h2 uk-text-center"><span>Вход</span></h6>
+                            {{ form.as_p }}
+                            <div class="uk-grid-match uk-child-width-expan uk-text-center" uk-grid>
+                                <div uk-margin>
+                                    <button class="uk-button uk-button-primary">Войти</button>
+                                </div>
+                                <div class="uk-text-center">
+                                    <a class="uk-button uk-button-danger" href="{% url 'users:recovery_password' %}">Сброс
+                                        пароля</a>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div></div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

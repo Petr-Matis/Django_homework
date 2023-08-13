@@ -6,7 +6,8 @@
             <div class="uk-child-width-2-3">
                 <div class="uk-flex uk-flex-center uk-object-center-center">
                     <div class="uk-card uk-card-default uk-card-body uk-margin-center ">
-                        <span class="uk-text-small uk-text-right">Дата создания: {{ product.create_date }}</span>
+                        <div class="uk-card-badge">Владелец {{ product.owner| default:"Неизвестен"}}</div>
+                        <span class="uk-text-small uk-text-left">Дата создания: {{ product.create_date }}</span>
                         <div class="uk-card-media-top">
                             <img class="uk-object-position-center-center" src="{{ somevariable|check_foto:product }}"
                                  width="400" height="400" alt="">
@@ -27,16 +28,21 @@
                             </tr>
                             </tbody>
                         </table>
-                        <div class="uk-column-1-3">
+                        {% if user.is_authenticated %}
+                            <div class="uk-column-1-3">
                             <div class="uk-text-center">
-                                <a class="uk-button uk-button-primary" href="{% url 'catalog:product_create' %}">Создать</a>
+                                <a class="uk-button uk-button-primary"
+                                   href="{% url 'catalog:product_create' %}">Создать</a>
                             </div>
                             <div class="uk-text-center">
-                                <a class="uk-button uk-button-secondary" href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
+                                <a class="uk-button uk-button-secondary"
+                                   href="{% url 'catalog:product_update' object.pk %}">Изменить</a>
                             </div>
                             <div class="uk-text-center">
-                                <a class="uk-button uk-button-danger" href="{% url 'catalog:product_delete' object.pk %}">Удалить</a>
+                                <a class="uk-button uk-button-danger"
+                                   href="{% url 'catalog:product_delete' object.pk %}">Удалить</a>
                             </div>
+                        {% endif %}
                         </div>
                     </div>
                 </div>

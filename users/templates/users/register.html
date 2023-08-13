@@ -1,0 +1,26 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+    <div class="uk-section-xsmall uk-section-muted">
+        <div class="uk-container">
+
+        <div class="uk-child-width uk-text-center" uk-grid>
+
+            <div></div>
+            <div class="uk-card uk-card-default uk-card-body">
+                <fieldset class="uk-fieldset">
+                    <form class="uk-form-horizontal uk-margin-large" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <h6 class="uk-heading-line uk-h2 uk-text-center"><span>Регистрация</span></h6>
+                        {{ form.as_p }}
+                        <p uk-margin>
+                            <button class="uk-button uk-button-primary">Регистрация</button>
+                        </p>
+                    </form>
+                </fieldset>
+            </div>
+            <div></div>
+        </div>
+
+    </div>
+    </div>
+{% endblock %}

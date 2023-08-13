@@ -1,10 +1,12 @@
 from django.forms import inlineformset_factory
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Category, Blog, Version
+from django.core.paginator import Paginator
+from django.core.files.storage import FileSystemStorage
 
 
 class ProductListView(generic.ListView):
@@ -40,8 +42,6 @@ class ProductCreateView(generic.CreateView):
         'title': 'Добавить товар'
     }
 
-    # fields = ('name', 'description', 'image', 'category', 'price')
-    # success_url = reverse_lazy('catalog:index')
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         all_product = Product.objects.all()
@@ -49,6 +49,12 @@ class ProductCreateView(generic.CreateView):
         category_list = Category.objects.all()
         context['category_list'] = category_list
         return context
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class ProductUpdateView(generic.UpdateView):
@@ -75,6 +81,8 @@ class ProductUpdateView(generic.UpdateView):
         version_is_active = 0
         formset = self.get_context_data()['formset']
         self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
@@ -154,6 +162,12 @@ class BlogCreateView(generic.CreateView):
         context['all_product_list'] = all_product
         return context
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
+
 
 class BlogUpdateView(generic.UpdateView):
     model = Blog
@@ -165,6 +179,12 @@ class BlogUpdateView(generic.UpdateView):
         context['all_product_list'] = all_product
         context['title'] = context['object']
         return context
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.self()
+        return super().form_valid(form)
 
 
 class BlogDeleteView(generic.DeleteView):

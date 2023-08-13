@@ -1,0 +1,25 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+    <div class="uk-section-large uk-section-muted">
+        <div class="uk-container" style="height: 55vh">
+            <form class="uk-margin-auto" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="uk-child-width-1-3 uk-text-center" uk-grid>
+                    <div></div>
+                    <div class="uk-card uk-card-default uk-card-body">
+                        <fieldset class="uk-fieldset">
+                            <h6 class="uk-heading-line uk-h2 uk-text-center"><span>Восстановление пароля</span></h6>
+                            {{ form.as_p }}
+                            <div class="uk-grid-match uk-child-width-expan uk-text-center" uk-grid>
+                                <div uk-margin>
+                                    <button class="uk-button uk-button-primary">Восстановить</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div></div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

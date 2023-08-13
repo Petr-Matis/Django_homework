@@ -1,25 +1,46 @@
+{% load static %}
 <div class="uk-section-primary">
     <nav class="uk-navbar-container uk-navbar-transparent uk-light">
         <div class="uk-container">
             <div uk-navbar>
                 <div class="uk-navbar-center">
                     <ul class="uk-navbar-nav">
-                        <li><a href="{% url 'catalog:product_create' %}"><span uk-icon="icon: plus"></span>Добавить
-                            товар</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'catalog:product_create' %}"><span uk-icon="icon: plus"></span>Добавить
+                                товар</a></li>
+                        {% endif %}
                         <li class="uk-active"><a href="{% url 'catalog:index' %}">Каталог</a>
                             <div class="uk-navbar-dropdown">
                                 <ul class="uk-nav uk-navbar-dropdown-nav">
                                     {% for object in all_product_list %}
-                                    <li class="uk-active"><a
-                                            href="{% url 'catalog:product' object.id %}">{{ object.name }}</a></li>
+                                        <li class="uk-active"><a
+                                                href="{% url 'catalog:product' object.id %}">{{ object.name }}</a></li>
                                     {% endfor %}
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="{% url 'catalog:add_blog' %}"><span uk-icon="icon: plus"></span>Добавить
-                            пост</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'catalog:add_blog' %}"><span uk-icon="icon: plus"></span>Добавить
+                                пост</a></li>
+                        {% endif %}
                         <li class="uk-active"><a href="{% url 'catalog:blogs' %}">Блог</a></li>
                         <li class="uk-active"><a href="{% url 'catalog:contact' %}">Контакт</a></li>
+                    </ul>
+                </div>
+                <div class="uk-navbar-right">
+                    <ul class="uk-navbar-nav">
+                        {% if user.is_authenticated %}
+                            {% if user.avatar %}
+                                <img class="uk-preserve-width uk-border-circle" src="{{ user.avatar.url }}" width="80"
+                                     height="80" alt="Аватарка" loading="lazy">
+                            {% endif %}
+                            <li class="uk-active"><a href="{% url 'users:profile' %}">Профиль<br>{{ user.email }}</a>
+                            </li>
+                            <li class="uk-active"><a href="{% url 'users:logout' %}">Выйти</a></li>
+                        {% else %}
+                            <li class="uk-active"><a href="{% url 'users:register' %}">Регистрация</a></li>
+                            <li class="uk-active"><a href="{% url 'users:login' %}">Войти</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
