@@ -9,11 +9,14 @@
                 {% for object in page_obj %}
                     <div>
                         <div class="uk-card uk-card-default uk-card-body">
-                            {% for version in version_is_active %}
-                            {% if version.product == object %}
-                                <span class="uk-text-small uk-text-right">Версия: {{ version.title }}</span>
+                            {% if not object.is_published %}
+                                <div><span class="uk-label uk-label-danger">На модерации</span></div>
                             {% endif %}
-                    {% endfor %}
+                            {% for version in version_is_active %}
+                                {% if version.product == object %}
+                                    <span class="uk-text-small uk-text-right">Версия: {{ version.title }}</span>
+                                {% endif %}
+                            {% endfor %}
                             <div class="uk-height-medium uk-flex uk-flex-center uk-flex-middle uk-background-cover uk-light"
                                  data-src="{{ somevariable|check_foto:object }}" uk-img>
                             </div>

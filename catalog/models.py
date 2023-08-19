@@ -5,14 +5,13 @@ from django.db import models
 from django.urls import reverse
 from pytils.translit import slugify
 
-NULLABLE = {'blank': True, 'null': True}
+NULLABLE = {'blank': True, 'null':True}
 
 
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.CharField(max_length=100, verbose_name='Описание')
-
-    # created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
+    #created_at = models.DateTimeField(verbose_name='Дата создания', auto_now_add=True)
 
     def __str__(self):
         return f'{self.name}'
@@ -27,10 +26,11 @@ class Product(models.Model):
     description = models.TextField(verbose_name='Описание')
     image = models.ImageField(upload_to='products/', verbose_name='Изображение', **NULLABLE)
     category = models.ForeignKey('Category', on_delete=models.CASCADE, verbose_name='Категория товара')
-    price = models.IntegerField(verbose_name='цена за покупку')
-    create_date = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
-    last_change_date = models.DateTimeField(verbose_name='дата последнего изменения', auto_now=True)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='владелец')
+    price = models.IntegerField(verbose_name='Цена за покупку')
+    create_date = models.DateTimeField(verbose_name='Дата создания',auto_now_add=True)
+    last_change_date = models.DateTimeField(verbose_name='Дата последнего изменения', auto_now=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='Владелец')
+    is_published = models.BooleanField(default=False, verbose_name='Опубликован')
 
     def __str__(self):
         return f'{self.name}'
@@ -42,11 +42,26 @@ class Product(models.Model):
         return self.version_set.get(is_active=True)
 
     class Meta:
+        permissions = [
+            (
+                'set_published',
+                'Может отменять публикацию продукта'
+            ),
+            (
+                'set_description',
+                'Может менять описание любого продукта'
+            ),
+            (
+                'set_category',
+                'Может менять категорию любого продукта'
+            )
+        ]
         verbose_name = 'товар'
         verbose_name_plural = 'товары'
 
 
 class Version(models.Model):
+
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')
     number = models.IntegerField(verbose_name='Номер версии')
     title = models.CharField(max_length=100, verbose_name='Название версии')
@@ -61,7 +76,7 @@ class Version(models.Model):
 
     def clean(self) -> None:
         super().clean()
-        if Version.objects.filter(product=self.product, is_active=True).get() != self and self.is_active:
+        if Version.objects.filter(product=self.product, is_active=True).get() != self and self.is_active :
             raise forms.ValidationError('Ты можешь установить только одну активную версию.')
 
 

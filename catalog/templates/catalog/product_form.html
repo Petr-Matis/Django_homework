@@ -4,9 +4,9 @@
         <div class="uk-container ">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% if formset.non_form_errors %}
-                    <div class="alert alertdanger">111{{ formset.non_form_errors }}</div>
-                {% endif %}
+{#                {% if formset.non_form_errors %}#}
+{#                    <div class="alert alertdanger">{{ formset.non_form_errors }}</div>#}
+{#                {% endif %}#}
                 <div uk-grid>
                     <div class="uk-width-1-2">
                         <div class="uk-card uk-card-default uk-card-body">
@@ -25,23 +25,25 @@
                             </fieldset>
                         </div>
                     </div>
-                {% if formset %}
-                    <div class="uk-width-1-2">
-                        <div class="uk-card uk-card-default uk-card-body">
-                            <fieldset class="uk-fieldset">
-                                <legend class="uk-legend">Версия продукта</legend>
+                    {% if perms.catalog.change_version %}
+                        {% if formset %}
+                            <div class="uk-width-1-2">
+                                <div class="uk-card uk-card-default uk-card-body">
+                                    <fieldset class="uk-fieldset">
+                                        <legend class="uk-legend">Версия продукта</legend>
 
-                                {{ formset.management_form }}
-                                {% for form in formset.forms %}
-                                    {{ form.as_p }}
-                                    {% if not forloop.last %}
-                                        <hr class="uk-divider-icon">
-                                    {% endif %}
-                                {% endfor %}
-                            </fieldset>
-                        </div>
-                    </div>
-                {% endif %}
+                                        {{ formset.management_form }}
+                                        {% for form in formset.forms %}
+                                            {{ form.as_p }}
+                                            {% if not forloop.last %}
+                                                <hr class="uk-divider-icon">
+                                            {% endif %}
+                                        {% endfor %}
+                                    </fieldset>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
                 </div>
             </form>
         </div>
