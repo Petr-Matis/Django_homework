@@ -11,6 +11,8 @@ from catalog.models import Product, Category, Blog, Version
 from django.core.paginator import Paginator
 from django.core.files.storage import FileSystemStorage
 
+from catalog.services import get_cached_category_list
+
 
 class ProductListView(generic.ListView):
     paginate_by = 3
@@ -51,8 +53,7 @@ class ProductCreateView(PermissionRequiredMixin, generic.CreateView):
         context = super().get_context_data(*args, **kwargs)
         all_product = Product.objects.all()
         context['all_product_list'] = all_product
-        category_list = Category.objects.all()
-        context['category_list'] = category_list
+        context['category_list'] = get_cached_category_list
         return context
 
     def form_valid(self, form):
@@ -72,8 +73,7 @@ class ProductUpdateView(PermissionRequiredMixin, generic.UpdateView):
         context = super().get_context_data(*args, **kwargs)
         all_product = Product.objects.all()
         context['all_product_list'] = all_product
-        category_list = Category.objects.all()
-        context['category_list'] = category_list
+        context['category_list'] = get_cached_category_list
         context['title'] = context['object']
         version_form_set = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
         if self.request.method == 'POST':
